@@ -6,7 +6,6 @@ import { PetComponent } from './pet/pet.component';
 import { UserComponent } from './user/user.component';
 import { CalendarComponent } from './calendar/calendar.component';
 
-
 @NgModule({
   declarations: [
     PetComponent,
