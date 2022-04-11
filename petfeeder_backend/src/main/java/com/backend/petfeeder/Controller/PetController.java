@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,6 +29,16 @@ public class PetController {
             return new ResponseEntity<>(petDTO, HttpStatus.CREATED);
         } else {
           return new ResponseEntity<>(null, HttpStatus.I_AM_A_TEAPOT);
+        }
+    }
+
+    @PostMapping("/updatePet/{username}")
+    public ResponseEntity<PetDTO> updatePet(@RequestBody PetDTO petDTO, @PathVariable("username") String username) {
+        PetDTO petDTOUpdated = petService.updatePet(petDTO, username);
+        if (petDTOUpdated != null) {
+            return new ResponseEntity<>(petDTOUpdated, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(null, HttpStatus.I_AM_A_TEAPOT);
         }
     }
 }

@@ -89,6 +89,25 @@ public class UserService {
         return null;
     }
 
+    public UserDTO removePetFromUser(UserDTO userDTO, PetDAO petDAO) {
+        UserDAO userDAO = userRepository.findByEmailEquals(userDTO.getEmail());
+        if (userDAO != null) {
+            UserDAO updatedUser = userDTO.toDAO();
+            updatedUser.setPassword(userDAO.getPassword());
+            updatedUser.setId(userDAO.getId());
+            List<PetDAO> petDAOList = updatedUser.getPets();
+            if (petDAOList.stream().anyMatch(e -> e.getName().equals(petDAO.getName()))) {
+                petDAOList.remove(petDAO);
+                userDAO.setPets(petDAOList);
+                UserDAO userDAOSaved = userRepository.save(userDAO);
+                if (userDAOSaved != null) {
+                    return userDAOSaved.toDTO();
+                }
+            } //I think error handling will be needed here
+        }
+        return null;
+    }
+
     public void deleteUser(UserDTO userDTO) {
         UserDAO userDAO = userRepository.findByEmailEquals(userDTO.getEmail());
         userRepository.delete(userDAO);
