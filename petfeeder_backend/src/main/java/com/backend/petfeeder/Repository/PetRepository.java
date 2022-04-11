@@ -10,5 +10,4 @@ import java.util.List;
 @Repository
 public interface PetRepository extends JpaRepository<PetDAO, Integer> {
     List<PetDAO> findByNameEqualsAndBreedEqualsAndBirthDateEquals(String name, String breed, Date birthDate);
-
 }

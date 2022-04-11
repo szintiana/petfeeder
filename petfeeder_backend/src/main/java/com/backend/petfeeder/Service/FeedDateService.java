@@ -5,7 +5,6 @@ import com.backend.petfeeder.DAO.PetDAO;
 import com.backend.petfeeder.DAO.UserDAO;
 import com.backend.petfeeder.DTO.FeedDateDTO;
 import com.backend.petfeeder.Repository.FeedDateRepository;
-import com.backend.petfeeder.Repository.PetRepository;
 import com.backend.petfeeder.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -23,9 +22,6 @@ public class FeedDateService {
     @Autowired
     @Lazy
     UserRepository userRepository;
-    @Autowired
-    @Lazy
-    PetRepository petRepository;
 
     public FeedDateDTO addFeedDate(FeedDateDTO feedDateDTO) {
         UserDAO userDAO = userRepository.findByEmailEquals(feedDateDTO.getUserDTO().getUsername());
