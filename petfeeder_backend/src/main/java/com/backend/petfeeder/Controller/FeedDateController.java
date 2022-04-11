@@ -2,12 +2,14 @@ package com.backend.petfeeder.Controller;
 
 import com.backend.petfeeder.DTO.FeedDateDTO;
 import com.backend.petfeeder.Service.FeedDateService;
-import com.backend.petfeeder.Utils.MQTTService;
+import com.backend.petfeeder.Service.MQTTService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,13 +32,19 @@ public class FeedDateController {
     FeedDateService feedDateService;
 
     @PostMapping("addFeedDate")
-    public ResponseEntity<FeedDateDTO> add(FeedDateDTO feedDateDTO) {
+    public ResponseEntity<FeedDateDTO> addFeedDate(FeedDateDTO feedDateDTO) {
         FeedDateDTO addedElement = feedDateService.addFeedDate(feedDateDTO);
         if (addedElement != null) {
             return new ResponseEntity<>(feedDateDTO, HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(null, HttpStatus.I_AM_A_TEAPOT);
         }
+    }
+
+    @DeleteMapping("removeFeedDate/{email}/{petName}/{date}")
+    public void removeFeedDate(@PathVariable("email") String email, @PathVariable("petName") String petName,
+                               @PathVariable LocalDateTime date) {
+        feedDateService.removeFeedDate(email, date, petName);
     }
 
     @Bean

@@ -70,13 +70,10 @@ public class UserService {
         }
     }
 
-    public UserDTO addPetToUser(UserDTO userDTO, PetDAO petDAO) {
-        UserDAO userDAO = userRepository.findByEmailEquals(userDTO.getEmail());
+    public UserDTO addPetToUser(String email, PetDAO petDAO) {
+        UserDAO userDAO = userRepository.findByEmailEquals(email);
         if (userDAO != null) {
-            UserDAO updatedUser = userDTO.toDAO();
-            updatedUser.setPassword(userDAO.getPassword());
-            updatedUser.setId(userDAO.getId());
-            List<PetDAO> petDAOList = updatedUser.getPets();
+            List<PetDAO> petDAOList = userDAO.getPets();
             if (petDAOList.stream().anyMatch(e -> e.getName().equals(petDAO.getName()))) {
                 petDAOList.add(petDAO);
                 userDAO.setPets(petDAOList);
@@ -89,13 +86,10 @@ public class UserService {
         return null;
     }
 
-    public UserDTO removePetFromUser(UserDTO userDTO, PetDAO petDAO) {
-        UserDAO userDAO = userRepository.findByEmailEquals(userDTO.getEmail());
+    public UserDTO removePetFromUser(String email, PetDAO petDAO) {
+        UserDAO userDAO = userRepository.findByEmailEquals(email);
         if (userDAO != null) {
-            UserDAO updatedUser = userDTO.toDAO();
-            updatedUser.setPassword(userDAO.getPassword());
-            updatedUser.setId(userDAO.getId());
-            List<PetDAO> petDAOList = updatedUser.getPets();
+            List<PetDAO> petDAOList = userDAO.getPets();
             if (petDAOList.stream().anyMatch(e -> e.getName().equals(petDAO.getName()))) {
                 petDAOList.remove(petDAO);
                 userDAO.setPets(petDAOList);

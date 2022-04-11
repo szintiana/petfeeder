@@ -1,4 +1,4 @@
-package com.backend.petfeeder.Utils;
+package com.backend.petfeeder.Service;
 
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;

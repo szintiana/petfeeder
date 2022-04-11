@@ -1,5 +1,6 @@
 package com.backend.petfeeder.Controller;
 
+import com.backend.petfeeder.DAO.PetDAO;
 import com.backend.petfeeder.DAO.UserDAO;
 import com.backend.petfeeder.DTO.UserDTO;
 import com.backend.petfeeder.Service.UserService;
@@ -55,10 +56,32 @@ public class UserController {
     }
 
     @PutMapping("/updateUser")
-    public ResponseEntity<UserDTO> updateUser (@RequestBody UserDTO userDTO) {
+    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO) {
         UserDTO updatedUser = userService.updateUser(userDTO);
         if (updatedUser != null) {
-            return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
+            return new ResponseEntity<>(updatedUser, HttpStatus.CREATED);
+        }
+        else {
+            return new ResponseEntity<>(null, HttpStatus.I_AM_A_TEAPOT);
+        }
+    }
+
+    @PutMapping("/addPetToUser/{email}")
+    public ResponseEntity<UserDTO> addPetToUser(@RequestBody PetDAO petDAO, @PathVariable("email") String email) {
+        UserDTO updatedUser = userService.addPetToUser(email, petDAO);
+        if (updatedUser != null) {
+            return new ResponseEntity<>(updatedUser, HttpStatus.CREATED);
+        }
+        else {
+            return new ResponseEntity<>(null, HttpStatus.I_AM_A_TEAPOT);
+        }
+    }
+
+    @PutMapping("/removePetFromUser/{email}")
+    public ResponseEntity<UserDTO> removePetFromUser(@RequestBody PetDAO petDAO, @PathVariable("email") String email) {
+        UserDTO updatedUser = userService.addPetToUser(email, petDAO);
+        if (updatedUser != null) {
+            return new ResponseEntity<>(updatedUser, HttpStatus.CREATED);
         }
         else {
             return new ResponseEntity<>(null, HttpStatus.I_AM_A_TEAPOT);
