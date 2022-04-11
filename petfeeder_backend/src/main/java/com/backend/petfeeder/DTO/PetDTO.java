@@ -16,14 +16,12 @@ public class PetDTO {
     private String name;
     private String breed;
     private Date birthDate;
-    //private List<UserDTO> owners;
 
     public PetDAO toDAO() {
         return PetDAO.builder()
                 .name(name)
                 .breed(breed)
                 .birthDate(birthDate)
-                //.owners(owners.stream().map(UserDTO::toDAO).collect(Collectors.toList()))
                 .build();
     }
 }

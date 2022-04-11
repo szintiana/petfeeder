@@ -1,5 +1,6 @@
 package com.backend.petfeeder.Service;
 
+import com.backend.petfeeder.DAO.PetDAO;
 import com.backend.petfeeder.DAO.UserDAO;
 import com.backend.petfeeder.DTO.UserDTO;
 import com.backend.petfeeder.Repository.UserRepository;
@@ -22,7 +23,12 @@ public class UserService {
     }
 
     public UserDTO getById(Integer id) {
-        return userRepository.getById(id).toDTO();
+        UserDAO userDAO = userRepository.getById(id);
+        if (userDAO != null) {
+            return userDAO.toDTO();
+        } else {
+            return null;
+        }
     }
 
     public UserDTO getByEmailAndPassword(String email, String password) {
@@ -44,7 +50,12 @@ public class UserService {
     }
 
     public UserDTO addUser(UserDAO userDAO) {
-        return userRepository.save(userDAO).toDTO();
+        UserDAO userDAOAdded = userRepository.save(userDAO);
+        if (userDAOAdded != null) {
+            return userDAOAdded.toDTO();
+        } else {
+            return null;
+        }
     }
 
     public UserDTO updateUser(UserDTO userDTO) {
@@ -57,6 +68,25 @@ public class UserService {
         } else {
             return null;
         }
+    }
+
+    public UserDTO addPetToUser(UserDTO userDTO, PetDAO petDAO) {
+        UserDAO userDAO = userRepository.findByEmailEquals(userDTO.getEmail());
+        if (userDAO != null) {
+            UserDAO updatedUser = userDTO.toDAO();
+            updatedUser.setPassword(userDAO.getPassword());
+            updatedUser.setId(userDAO.getId());
+            List<PetDAO> petDAOList = updatedUser.getPets();
+            if (petDAOList.stream().anyMatch(e -> e.getName().equals(petDAO.getName()))) {
+                petDAOList.add(petDAO);
+                userDAO.setPets(petDAOList);
+                UserDAO userDAOSaved = userRepository.save(userDAO);
+                if (userDAOSaved != null) {
+                    return userDAOSaved.toDTO();
+                }
+            } //I think error handling will be needed here
+        }
+        return null;
     }
 
     public void deleteUser(UserDTO userDTO) {

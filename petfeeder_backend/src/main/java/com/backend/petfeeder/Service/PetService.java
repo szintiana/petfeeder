@@ -1,6 +1,7 @@
 package com.backend.petfeeder.Service;
 
 import com.backend.petfeeder.DAO.PetDAO;
+import com.backend.petfeeder.DAO.UserDAO;
 import com.backend.petfeeder.DTO.PetDTO;
 import com.backend.petfeeder.Repository.PetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,31 @@ public class PetService {
     }
 
     public PetDTO addPet(PetDAO petDAO) {
-        return petRepository.save(petDAO).toDTO();
+        PetDAO petDAOAdded = petRepository.save(petDAO);
+        if (petDAOAdded != null) {
+            return petDAOAdded.toDTO();
+        } else {
+            return null;
+        }
+    }
+
+    public PetDTO updatePet(PetDTO petDTO, String username) {
+        List<PetDAO> petDAOList = petRepository.findByNameEqualsAndBreedEqualsAndBirthDateEquals(petDTO.getName(),
+                petDTO.getBreed(), petDTO.getBirthDate());
+        for (PetDAO petDAO : petDAOList) {
+            List<UserDAO> userDAOList = petDAO.getOwners();
+            for (UserDAO userDAO : userDAOList) {
+                if (userDAO.getUsername().equals(username)) {
+                    PetDAO petDAOUpdated = petDTO.toDAO();
+                    petDAOUpdated.setId(petDAO.getId());
+                    petDAOUpdated.setOwners(petDAO.getOwners());
+                    petDAOUpdated = petRepository.save(petDAOUpdated);
+                    if (petDAOUpdated != null) {
+                        return petDAOUpdated.toDTO();
+                    }
+                }
+            }
+        }
+        return null;
     }
 }
