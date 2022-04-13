@@ -28,11 +28,7 @@ public class PetService {
 
     public PetDTO addPet(PetDAO petDAO) {
         PetDAO petDAOAdded = petRepository.save(petDAO);
-        if (petDAOAdded != null) {
-            return petDAOAdded.toDTO();
-        } else {
-            return null;
-        }
+        return petDAOAdded.toDTO();
     }
 
     public PetDTO updatePet(PetDTO petDTO, String username) {

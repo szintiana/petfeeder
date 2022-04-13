@@ -32,7 +32,7 @@ public class PetController {
         }
     }
 
-    @PutMapping("updatePet/{username}")
+    @PostMapping("updatePet/{username}")
     public ResponseEntity<PetDTO> updatePet(@RequestBody PetDTO petDTO, @PathVariable("username") String username) {
         PetDTO petDTOUpdated = petService.updatePet(petDTO, username);
         if (petDTOUpdated != null) {

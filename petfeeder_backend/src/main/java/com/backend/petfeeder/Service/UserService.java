@@ -3,6 +3,7 @@ package com.backend.petfeeder.Service;
 import com.backend.petfeeder.DAO.PetDAO;
 import com.backend.petfeeder.DAO.UserDAO;
 import com.backend.petfeeder.DTO.UserDTO;
+import com.backend.petfeeder.Repository.PetRepository;
 import com.backend.petfeeder.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -17,6 +18,9 @@ public class UserService {
     @Autowired
     @Lazy
     UserRepository userRepository;
+    @Autowired
+    @Lazy
+    PetRepository petRepository;
 
     public List<UserDTO> getAll() {
         return userRepository.findAll().stream().map((Function<UserDAO, UserDTO>) UserDAO::toDTO).collect(Collectors.toList());
@@ -24,11 +28,7 @@ public class UserService {
 
     public UserDTO getById(Integer id) {
         UserDAO userDAO = userRepository.getById(id);
-        if (userDAO != null) {
-            return userDAO.toDTO();
-        } else {
-            return null;
-        }
+        return userDAO.toDTO();
     }
 
     public UserDTO getByEmailAndPassword(String email, String password) {
@@ -51,11 +51,7 @@ public class UserService {
 
     public UserDTO addUser(UserDAO userDAO) {
         UserDAO userDAOAdded = userRepository.save(userDAO);
-        if (userDAOAdded != null) {
-            return userDAOAdded.toDTO();
-        } else {
-            return null;
-        }
+        return userDAOAdded.toDTO();
     }
 
     public UserDTO updateUser(UserDTO userDTO) {
@@ -74,13 +70,12 @@ public class UserService {
         UserDAO userDAO = userRepository.findByEmailEquals(email);
         if (userDAO != null) {
             List<PetDAO> petDAOList = userDAO.getPets();
-            if (petDAOList.stream().anyMatch(e -> e.getName().equals(petDAO.getName()))) {
+            if (petDAOList.stream().noneMatch(e -> e.getName().equals(petDAO.getName()))) {
                 petDAOList.add(petDAO);
                 userDAO.setPets(petDAOList);
+                petRepository.save(petDAO);
                 UserDAO userDAOSaved = userRepository.save(userDAO);
-                if (userDAOSaved != null) {
-                    return userDAOSaved.toDTO();
-                }
+                return userDAOSaved.toDTO();
             } //I think error handling will be needed here
         }
         return null;
@@ -97,9 +92,7 @@ public class UserService {
                     petDAOList.remove(petDAO);
                     userDAO.setPets(petDAOList);
                     UserDAO userDAOSaved = userRepository.save(userDAO);
-                    if (userDAOSaved != null) {
-                        return userDAOSaved.toDTO();
-                    }
+                    return userDAOSaved.toDTO();
                 }
             } //I think error handling will be needed here
         }

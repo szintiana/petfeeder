@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
@@ -26,7 +25,7 @@ public class UserDTO {
                 .lastName(lastName)
                 .username(username)
                 .email(email)
-                .pets(pets.stream().map(PetDTO::toDAO).collect(Collectors.toList()))
+                //.pets(pets.stream().map(PetDTO::toDAO).collect(Collectors.toList()))
                 .build();
     }
 }

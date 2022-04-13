@@ -55,7 +55,7 @@ public class UserController {
         }
     }
 
-    @PutMapping("updateUser")
+    @PostMapping("updateUser")
     public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO) {
         UserDTO updatedUser = userService.updateUser(userDTO);
         if (updatedUser != null) {
@@ -66,7 +66,7 @@ public class UserController {
         }
     }
 
-    @PutMapping("addPetToUser/{email}")
+    @PostMapping("addPetToUser/{email}")
     public ResponseEntity<UserDTO> addPetToUser(@RequestBody PetDAO petDAO, @PathVariable("email") String email) {
         UserDTO updatedUser = userService.addPetToUser(email, petDAO);
         if (updatedUser != null) {
@@ -77,7 +77,7 @@ public class UserController {
         }
     }
 
-    @PutMapping("removePetFromUser/{email}/{petName}")
+    @PostMapping("removePetFromUser/{email}/{petName}")
     public ResponseEntity<UserDTO> removePetFromUser(@PathVariable("petName") String petName, @PathVariable("email") String email) {
         UserDTO updatedUser = userService.removePetFromUser(email, petName);
         if (updatedUser != null) {

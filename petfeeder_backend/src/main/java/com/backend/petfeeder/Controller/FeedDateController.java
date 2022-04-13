@@ -43,7 +43,7 @@ public class FeedDateController {
 
     @DeleteMapping("removeFeedDate/{email}/{petName}/{date}")
     public void removeFeedDate(@PathVariable("email") String email, @PathVariable("petName") String petName,
-                               @PathVariable LocalDateTime date) {
+                               @PathVariable("date") LocalDateTime date) {
         feedDateService.removeFeedDate(email, date, petName);
     }
 

@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @Data
@@ -43,7 +42,7 @@ public class UserDAO {
                 .lastName(lastName)
                 .email(email)
                 .username(username)
-                .pets(pets.stream().map(PetDAO::toDTO).collect(Collectors.toList()))
+                //.pets(pets.stream().map(PetDAO::toDTO).collect(Collectors.toList()))
                 .build();
     }
 }
