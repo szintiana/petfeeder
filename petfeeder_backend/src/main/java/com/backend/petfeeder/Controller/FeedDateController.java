@@ -8,10 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -31,11 +28,13 @@ public class FeedDateController {
     @Lazy
     FeedDateService feedDateService;
 
-    @PostMapping("addFeedDate")
-    public ResponseEntity<FeedDateDTO> addFeedDate(FeedDateDTO feedDateDTO) {
-        FeedDateDTO addedElement = feedDateService.addFeedDate(feedDateDTO);
+    @PostMapping("addFeedDate/{email}/{petName}/{date}")
+    public ResponseEntity<FeedDateDTO> addFeedDate(@PathVariable("email") String email,
+                                                   @PathVariable("petName") String petName,
+                                                   @PathVariable("date") String date) {
+        FeedDateDTO addedElement = feedDateService.addFeedDate(email, petName, date);
         if (addedElement != null) {
-            return new ResponseEntity<>(feedDateDTO, HttpStatus.CREATED);
+            return new ResponseEntity<>(addedElement, HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(null, HttpStatus.I_AM_A_TEAPOT);
         }
