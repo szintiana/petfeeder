@@ -16,12 +16,12 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @GetMapping("/getAllUsers")
+    @GetMapping("getAllUsers")
     public List<UserDTO> getAll() {
         return userService.getAll();
     }
 
-    @GetMapping("/getUserByUsernameAndPassword/{username}/{password}")
+    @GetMapping("getUserByUsernameAndPassword/{username}/{password}")
     public ResponseEntity<UserDTO> getUserByUsernameAndPassword(@PathVariable("username") String username,
                                                                @PathVariable("password") String password) {
         UserDTO userDTO = userService.getByUsernameAndPassword(username, password);
@@ -33,7 +33,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/getUserByEmailAndPassword/{email}/{password}")
+    @GetMapping("getUserByEmailAndPassword/{email}/{password}")
     public ResponseEntity<UserDTO> getUserByEmailAndPassword(@PathVariable("email") String email,
                                                              @PathVariable("password") String password) {
         UserDTO userDTO = userService.getByEmailAndPassword(email, password);
@@ -44,7 +44,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/addUser")
+    @PostMapping("addUser")
     public ResponseEntity<UserDTO> addUser(@RequestBody UserDAO userDAO) {
         UserDTO userDTO = userService.addUser(userDAO);
         if (userDTO != null) {
@@ -55,7 +55,7 @@ public class UserController {
         }
     }
 
-    @PutMapping("/updateUser")
+    @PutMapping("updateUser")
     public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO) {
         UserDTO updatedUser = userService.updateUser(userDTO);
         if (updatedUser != null) {
@@ -66,7 +66,7 @@ public class UserController {
         }
     }
 
-    @PutMapping("/addPetToUser/{email}")
+    @PutMapping("addPetToUser/{email}")
     public ResponseEntity<UserDTO> addPetToUser(@RequestBody PetDAO petDAO, @PathVariable("email") String email) {
         UserDTO updatedUser = userService.addPetToUser(email, petDAO);
         if (updatedUser != null) {
@@ -77,9 +77,9 @@ public class UserController {
         }
     }
 
-    @PutMapping("/removePetFromUser/{email}")
-    public ResponseEntity<UserDTO> removePetFromUser(@RequestBody PetDAO petDAO, @PathVariable("email") String email) {
-        UserDTO updatedUser = userService.addPetToUser(email, petDAO);
+    @PutMapping("removePetFromUser/{email}/{petName}")
+    public ResponseEntity<UserDTO> removePetFromUser(@PathVariable("petName") String petName, @PathVariable("email") String email) {
+        UserDTO updatedUser = userService.removePetFromUser(email, petName);
         if (updatedUser != null) {
             return new ResponseEntity<>(updatedUser, HttpStatus.CREATED);
         }

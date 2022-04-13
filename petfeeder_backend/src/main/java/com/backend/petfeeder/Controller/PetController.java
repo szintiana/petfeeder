@@ -17,12 +17,12 @@ public class PetController {
     @Lazy
     PetService petService;
 
-    @GetMapping("/getAllPets")
+    @GetMapping("getAllPets")
     public List<PetDTO> getAll() {
         return petService.getAll();
     }
 
-    @PostMapping("/addPet")
+    @PostMapping("addPet")
     public ResponseEntity<PetDTO> addPet(@RequestBody PetDAO petDAO) {
         PetDTO petDTO = petService.addPet(petDAO);
         if (petDTO != null) {
@@ -32,7 +32,7 @@ public class PetController {
         }
     }
 
-    @PutMapping("/updatePet/{username}")
+    @PutMapping("updatePet/{username}")
     public ResponseEntity<PetDTO> updatePet(@RequestBody PetDTO petDTO, @PathVariable("username") String username) {
         PetDTO petDTOUpdated = petService.updatePet(petDTO, username);
         if (petDTOUpdated != null) {

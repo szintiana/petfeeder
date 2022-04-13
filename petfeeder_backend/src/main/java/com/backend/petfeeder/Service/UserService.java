@@ -86,16 +86,20 @@ public class UserService {
         return null;
     }
 
-    public UserDTO removePetFromUser(String email, PetDAO petDAO) {
+    public UserDTO removePetFromUser(String email, String petName) {
         UserDAO userDAO = userRepository.findByEmailEquals(email);
         if (userDAO != null) {
             List<PetDAO> petDAOList = userDAO.getPets();
-            if (petDAOList.stream().anyMatch(e -> e.getName().equals(petDAO.getName()))) {
-                petDAOList.remove(petDAO);
-                userDAO.setPets(petDAOList);
-                UserDAO userDAOSaved = userRepository.save(userDAO);
-                if (userDAOSaved != null) {
-                    return userDAOSaved.toDTO();
+            if (petDAOList.stream().anyMatch(e -> e.getName().equals(petName))) {
+                PetDAO petDAO = petDAOList.stream().filter(e -> e.getName().equals(petName))
+                        .findAny().orElse(null);
+                if (petDAO != null) {
+                    petDAOList.remove(petDAO);
+                    userDAO.setPets(petDAOList);
+                    UserDAO userDAOSaved = userRepository.save(userDAO);
+                    if (userDAOSaved != null) {
+                        return userDAOSaved.toDTO();
+                    }
                 }
             } //I think error handling will be needed here
         }

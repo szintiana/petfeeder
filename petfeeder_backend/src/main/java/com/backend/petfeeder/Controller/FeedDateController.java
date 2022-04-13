@@ -48,7 +48,7 @@ public class FeedDateController {
     }
 
     @Bean
-    public void launchFeedDateController() {
+    public void launchFeedDateController()  {
         mqttService.startMqtt();
         mqttService.subscribe("petfeeder");
         runTasks();
