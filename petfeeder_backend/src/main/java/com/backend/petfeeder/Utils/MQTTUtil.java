@@ -1,11 +1,11 @@
-package com.backend.petfeeder.Service;
+package com.backend.petfeeder.Utils;
 
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MQTTService implements MqttCallback {
+public class MQTTUtil implements MqttCallback {
     private MqttClient client;
 
     @Override

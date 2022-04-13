@@ -1,6 +1,5 @@
 package com.backend.petfeeder;
 
-import com.backend.petfeeder.Service.PythonExecutorService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,6 +12,5 @@ public class PetfeederApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		PythonExecutorService.execute();
 	}
 }

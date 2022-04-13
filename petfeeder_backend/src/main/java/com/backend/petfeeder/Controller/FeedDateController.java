@@ -2,7 +2,7 @@ package com.backend.petfeeder.Controller;
 
 import com.backend.petfeeder.DTO.FeedDateDTO;
 import com.backend.petfeeder.Service.FeedDateService;
-import com.backend.petfeeder.Service.MQTTService;
+import com.backend.petfeeder.Utils.MQTTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
@@ -25,7 +25,7 @@ import java.util.TimerTask;
 public class FeedDateController {
     @Autowired
     @Lazy
-    MQTTService mqttService;
+    MQTTUtil mqttUtil;
 
     @Autowired
     @Lazy
@@ -49,8 +49,8 @@ public class FeedDateController {
 
     @Bean
     public void launchFeedDateController()  {
-        mqttService.startMqtt();
-        mqttService.subscribe("petfeeder");
+        mqttUtil.startMqtt();
+        mqttUtil.subscribe("petfeeder");
         runTasks();
     }
 
@@ -65,7 +65,7 @@ public class FeedDateController {
                 TimerTask timerTask = new TimerTask() {
                     @Override
                     public void run() {
-                        mqttService.publish("petfeederApp", "feed");
+                        mqttUtil.publish("petfeederApp", "feed");
                     };
                 };
                 timer.schedule(timerTask, date);
