@@ -8,7 +8,8 @@ import { retry, catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class ApiService {
-  base_path = 'http://localhost:3000/pets';
+  base_ip = '59891';
+  base_path = 'http://127.0.0.1:';
 
   constructor(private http: HttpClient) {
   }
@@ -50,7 +51,7 @@ export class ApiService {
 
   getList(): Observable<Pet> {
       return this.http
-        .get<Pet>(this.base_path)
+        .get<Pet>(this.base_path + this.base_ip + "/getAllPets")
         .pipe(
           retry(2),
           catchError(this.handleError)

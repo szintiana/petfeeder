@@ -21,6 +21,30 @@ const routes: Routes = [
     path: 'pet-detail',
     loadChildren: () => import('./pet-detail/pet-detail.module').then( m => m.PetDetailPageModule)
   },
+  {
+    path: 'login-page',
+    loadChildren: () => import('./login-page/login-page.module').then( m => m.LoginPagePageModule)
+  },
+  {
+    path: 'register-page',
+    loadChildren: () => import('./register-page/register-page.module').then( m => m.RegisterPagePageModule)
+  },
+  {
+    path: 'current-user',
+    loadChildren: () => import('./current-user/current-user.module').then( m => m.CurrentUserPageModule)
+  },
+  {
+    path: 'landing',
+    loadChildren: () => import('./landing/landing.module').then( m => m.LandingPageModule)
+  },
+  {
+    path: 'login',
+    loadChildren: () => import('./auth/login/login.module').then( m => m.LoginPageModule)
+  },
+  {
+    path: 'register',
+    loadChildren: () => import('./auth/register/register.module').then( m => m.RegisterPageModule)
+  },
 ];
 
 @NgModule({
