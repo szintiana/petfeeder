@@ -93,4 +93,15 @@ public class UserController {
             return new ResponseEntity<>(null, HttpStatus.I_AM_A_TEAPOT);
         }
     }
+
+    @PostMapping("logout/{identifier}")
+    public ResponseEntity<UserDTO> logout(@PathVariable("identifier") String identifier) {
+        UserDTO userDTO = userService.logout(identifier);
+        if (userDTO != null) {
+            return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
+        }
+        else {
+            return new ResponseEntity<>(null, HttpStatus.I_AM_A_TEAPOT);
+        }
+    }
 }

@@ -87,6 +87,23 @@ public class UserService {
         return null;
     }
 
+    public UserDTO logout(String identifier) {
+        UserDAO userDAO = userRepository.findByUsernameEquals(identifier);
+        if (userDAO != null) {
+            userDAO.setToken(null);
+            UserDAO savedUser = userRepository.save(userDAO);
+            return savedUser.toDTO();
+        } else {
+            userDAO = userRepository.findByEmailEquals(identifier);
+            if (userDAO != null) {
+                userDAO.setToken(null);
+                UserDAO savedUser = userRepository.save(userDAO);
+                return savedUser.toDTO();
+            }
+        }
+        return null;
+    }
+
     public UserDTO removePetFromUser(String email, String petName) {
         UserDAO userDAO = userRepository.findByEmailEquals(email);
         if (userDAO != null) {
