@@ -112,15 +112,15 @@ public class UserController {
         if (userDTO != null) {
             String token = userService.getJWTToken(identifier);
             userDTO.setToken(token);
-            userService.updateUser(userDTO);
-            return new ResponseEntity<>(userDTO, HttpStatus.OK);
+            UserDTO updatedUser = userService.updateUser(userDTO);
+            return new ResponseEntity<>(updatedUser, HttpStatus.OK);
         } else {
             userDTO = userService.getByUsernameAndPassword(identifier, password);
             if (userDTO != null) {
                 String token = userService.getJWTToken(identifier);
                 userDTO.setToken(token);
-                userService.updateUser(userDTO);
-                return new ResponseEntity<>(userDTO, HttpStatus.OK);
+                UserDTO updatedUser = userService.updateUser(userDTO);
+                return new ResponseEntity<>(updatedUser, HttpStatus.OK);
             }
         }
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);

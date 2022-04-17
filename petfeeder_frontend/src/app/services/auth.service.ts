@@ -1,6 +1,6 @@
 import { EnvService } from './env.service';
 import { tap } from 'rxjs/operators';
-import { NativeStorage } from '@ionic-native/native-storage/ngx';
+import { Storage } from '@capacitor/storage';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User } from '../models/user';
@@ -14,14 +14,16 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
-    private storage: NativeStorage,
     private env: EnvService,
   ) {}
 
   login(identifier: String, password: String) {
     return this.http.post(this.env.LOGIN + '/' + identifier + '/' + password, null).pipe(
       tap(token => {
-        this.storage.setItem('token', token)
+        Storage.set({
+          key: "token",
+          value: token.toString()
+      })
         .then(
           () => {
             console.log('token stored');
@@ -52,7 +54,7 @@ export class AuthService {
     return this.http.post(this.env.LOGOUT + "/" + this.token["token_type"]+" "+this.token["access_token"], null)
     .pipe(
       tap(data => {
-        this.storage.remove("token");
+        Storage.remove({key: "token"});
         this.isLoggedIn = false;
         delete this.token;
         return data;
@@ -72,9 +74,9 @@ export class AuthService {
   }
 
   getToken() {
-    return this.storage.getItem('token').then(
+    return Storage.get({key: "token"}).then(
       data => {
-        this.token = data;
+        this.token = JSON.parse(data.value);
         if(this.token != null) {
           this.isLoggedIn = true;
         } else {

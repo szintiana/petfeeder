@@ -66,6 +66,7 @@ public class UserService {
             updatedUser.setPassword(userDAO.getPassword());
             updatedUser.setId(userDAO.getId());
             updatedUser.setPets(userDAO.getPets());
+            updatedUser.setToken(userDTO.getToken());
             return userRepository.save(updatedUser).toDTO();
         } else {
             return null;
