@@ -3,7 +3,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: '', redirectTo: 'pet-list', pathMatch: 'full'
+    path: '', redirectTo: 'login', pathMatch: 'full'
   },
   {
     path: 'pet-create',
@@ -24,14 +24,6 @@ const routes: Routes = [
   {
     path: 'landing',
     loadChildren: () => import('./landing/landing.module').then( m => m.LandingPageModule)
-  },
-  {
-    path: 'login',
-    loadChildren: () => import('./auth/login/login.module').then( m => m.LoginPageModule)
-  },
-  {
-    path: 'register',
-    loadChildren: () => import('./auth/register/register.module').then( m => m.RegisterPageModule)
   },
   {
     path: 'login',
