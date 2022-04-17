@@ -1,0 +1,9 @@
+{
+	"appId": "io.ionic.petfeeder",
+	"appName": "petfeeder_frontend",
+	"webDir": "www",
+	"bundledWebRuntime": false,
+	"server": {
+		"url": "http://localhost:8100"
+	}
+}
