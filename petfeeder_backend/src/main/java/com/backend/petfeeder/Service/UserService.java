@@ -87,21 +87,14 @@ public class UserService {
         return null;
     }
 
-    public UserDTO logout(String identifier) {
-        UserDAO userDAO = userRepository.findByUsernameEquals(identifier);
-        if (userDAO != null) {
-            userDAO.setToken(null);
-            UserDAO savedUser = userRepository.save(userDAO);
-            return savedUser.toDTO();
-        } else {
-            userDAO = userRepository.findByEmailEquals(identifier);
-            if (userDAO != null) {
-                userDAO.setToken(null);
-                UserDAO savedUser = userRepository.save(userDAO);
-                return savedUser.toDTO();
-            }
-        }
-        return null;
+    public UserDTO logout(String token) {
+       UserDAO userDAO = userRepository.findByTokenEquals(token);
+       if (userDAO != null) {
+           userDAO.setToken(null);
+           userRepository.save(userDAO);
+           return userDAO.toDTO();
+       }
+       return null;
     }
 
     public UserDTO removePetFromUser(String email, String petName) {
@@ -120,6 +113,15 @@ public class UserService {
             } //I think error handling will be needed here
         }
         return null;
+    }
+
+    public UserDTO findByToken(String token) {
+        UserDAO userDAO = userRepository.findByTokenEquals(token);
+        if (userDAO != null) {
+            return userDAO.toDTO();
+        } else {
+            return null;
+        }
     }
 
     public void deleteUser(UserDTO userDTO) {

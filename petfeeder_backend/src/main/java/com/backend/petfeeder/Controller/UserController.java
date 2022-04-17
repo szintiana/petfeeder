@@ -94,9 +94,41 @@ public class UserController {
         }
     }
 
-    @PostMapping("logout/{identifier}")
-    public ResponseEntity<UserDTO> logout(@PathVariable("identifier") String identifier) {
-        UserDTO userDTO = userService.logout(identifier);
+    @PostMapping("logout/{token}")
+    public ResponseEntity<UserDTO> logout(@PathVariable("token") String token) {
+        UserDTO userDTO = userService.logout(token);
+        if (userDTO != null) {
+            return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
+        }
+        else {
+            return new ResponseEntity<>(null, HttpStatus.I_AM_A_TEAPOT);
+        }
+    }
+
+    @PostMapping("/login/{identifier}/{password}")
+    public ResponseEntity<UserDTO> login(@PathVariable("identifier") String identifier,
+                                         @PathVariable("password") String password) {
+        UserDTO userDTO = userService.getByEmailAndPassword(identifier, password);
+        if (userDTO != null) {
+            String token = userService.getJWTToken(identifier);
+            userDTO.setToken(token);
+            userService.updateUser(userDTO);
+            return new ResponseEntity<>(userDTO, HttpStatus.OK);
+        } else {
+            userDTO = userService.getByUsernameAndPassword(identifier, password);
+            if (userDTO != null) {
+                String token = userService.getJWTToken(identifier);
+                userDTO.setToken(token);
+                userService.updateUser(userDTO);
+                return new ResponseEntity<>(userDTO, HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("findByToken/{token}")
+    public ResponseEntity<UserDTO> findByToken(@PathVariable("token") String token) {
+        UserDTO userDTO = userService.findByToken(token);
         if (userDTO != null) {
             return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
         }
