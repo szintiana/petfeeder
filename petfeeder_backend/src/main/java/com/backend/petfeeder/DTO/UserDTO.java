@@ -18,6 +18,7 @@ public class UserDTO {
     private String email;
     private String username;
     private List<PetDTO> pets;
+    private String token;
 
     public UserDAO toDAO() {
         return UserDAO.builder()

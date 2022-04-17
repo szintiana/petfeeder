@@ -35,6 +35,8 @@ public class UserDAO {
             inverseJoinColumns = @JoinColumn(name = "pet_id", referencedColumnName = "id"))
     @JsonIgnoreProperties("owners")
     private List<PetDAO> pets;
+    @Column
+    private String token;
 
     public UserDTO toDTO() {
         return UserDTO.builder()

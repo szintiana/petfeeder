@@ -21,11 +21,14 @@ public class UserController {
         return userService.getAll();
     }
 
-    @GetMapping("getUserByUsernameAndPassword/{username}/{password}")
+    @PostMapping("login/getUserByUsernameAndPassword/{username}/{password}")
     public ResponseEntity<UserDTO> getUserByUsernameAndPassword(@PathVariable("username") String username,
                                                                @PathVariable("password") String password) {
         UserDTO userDTO = userService.getByUsernameAndPassword(username, password);
         if (userDTO != null) {
+            String token = userService.getJWTToken(username);
+            userDTO.setToken(token);
+            userService.updateUser(userDTO);
             return new ResponseEntity<>(userDTO, HttpStatus.OK);
         }
         else {
@@ -33,11 +36,14 @@ public class UserController {
         }
     }
 
-    @GetMapping("getUserByEmailAndPassword/{email}/{password}")
+    @PostMapping("login/getUserByEmailAndPassword/{email}/{password}")
     public ResponseEntity<UserDTO> getUserByEmailAndPassword(@PathVariable("email") String email,
                                                              @PathVariable("password") String password) {
         UserDTO userDTO = userService.getByEmailAndPassword(email, password);
         if (userDTO != null) {
+            String token = userService.getJWTToken(email);
+            userDTO.setToken(token);
+            userService.updateUser(userDTO);
             return new ResponseEntity<>(userDTO, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
