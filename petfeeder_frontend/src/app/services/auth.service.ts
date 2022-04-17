@@ -18,8 +18,8 @@ export class AuthService {
     private env: EnvService,
   ) {}
 
-  login(email: String, password: String) {
-    return this.http.get(this.env.EMAIL_LOGIN + '/' + email + '/' + password).pipe(
+  login(identifier: String, password: String) {
+    return this.http.post(this.env.LOGIN + '/' + identifier + '/' + password, null).pipe(
       tap(token => {
         this.storage.setItem('token', token)
         .then(
@@ -43,15 +43,13 @@ export class AuthService {
         email: email,
         username: username,
         password: password
-      });
+      }); //return error if username or email already exists
   }
 
   //fix this as well please
+  // fixed??
   logout() {
-    const headers = new HttpHeaders({
-      'Authorization': this.token["token_type"]+" "+this.token["access_token"]
-    });
-    return this.http.get(this.env.LOGOUT, { headers: headers })
+    return this.http.post(this.env.LOGOUT + "/" + this.token["token_type"]+" "+this.token["access_token"], null)
     .pipe(
       tap(data => {
         this.storage.remove("token");
@@ -62,12 +60,10 @@ export class AuthService {
     )
   }
 
-  //needs to be fixed
+  // needs to be fixed
+  // I think it is fixed??
   user() {
-    const headers = new HttpHeaders({
-      'Authorization': this.token["token_type"]+" "+this.token["access_token"]
-    });
-    return this.http.get<User>(this.env.GET_USER_BY_TOKEN, { headers: headers })
+    return this.http.get<User>(this.env.GET_USER_BY_TOKEN + "/" + this.token["token_type"]+" "+this.token["access_token"])
     .pipe(
       tap(user => {
         return user;

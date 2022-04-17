@@ -7,9 +7,8 @@ export class EnvService {
   BASE_API_URL = 'http://127.0.0.1:';
   BASE_IP = '53799';
   BASE_URL = this.BASE_API_URL + this.BASE_IP;
-  EMAIL_LOGIN = this.BASE_URL + '/getUserByEmailAndPassword';
   REGISTER_USER = this.BASE_URL + '/addUser';
-  LOGIN;
+  LOGIN = this.BASE_URL + '/login';
   REGISTER;
   GET_ALL_PETS;
   ADD_PET;
@@ -17,10 +16,10 @@ export class EnvService {
   DELETE_PET;
   GET_PET;
   EDIT_USER;
-  LOGOUT;
+  LOGOUT = this.BASE_URL + '/logout';
   ADD_FEED_DATE;
   REMOVE_FEED_DATE;
-  GET_USER_BY_TOKEN;
+  GET_USER_BY_TOKEN = this.BASE_URL + '/findByToken';
 
   constructor() { }
 }

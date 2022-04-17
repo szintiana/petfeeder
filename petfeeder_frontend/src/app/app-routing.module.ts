@@ -41,6 +41,14 @@ const routes: Routes = [
     path: 'register',
     loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule)
   },
+  {
+    path: 'user-edit',
+    loadChildren: () => import('./user-edit/user-edit.module').then( m => m.UserEditPageModule)
+  },
+  {
+    path: 'pet-calendar',
+    loadChildren: () => import('./pet-calendar/pet-calendar.module').then( m => m.PetCalendarPageModule)
+  },
 ];
 
 @NgModule({
