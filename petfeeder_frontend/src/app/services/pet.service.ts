@@ -33,7 +33,7 @@ export class ApiService {
 
   createItem(item): Observable<Pet> {
       return this.http
-        .post<Pet>(this.base_path, JSON.stringify(item), this.httpOptions)
+        .post<Pet>(this.base_path + this.base_ip, JSON.stringify(item), this.httpOptions)
         .pipe(
           retry(2),
           catchError(this.handleError)
