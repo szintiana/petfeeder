@@ -19,6 +19,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class FeedDateController {
     @Autowired
     @Lazy

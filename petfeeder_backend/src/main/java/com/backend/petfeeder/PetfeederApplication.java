@@ -30,7 +30,9 @@ public class PetfeederApplication implements CommandLineRunner {
 					.addFilterAfter(new JwtAuthorisationFilter(), UsernamePasswordAuthenticationFilter.class)
 					.authorizeRequests()
 					.antMatchers( "/login/**").permitAll()
+					.antMatchers("/addUser").permitAll()
 					.anyRequest().authenticated();
+			http.cors();
 		}
 	}
 }
