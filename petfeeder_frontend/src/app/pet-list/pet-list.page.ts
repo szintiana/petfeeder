@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { timeout } from 'rxjs/operators';
 import { ApiService } from '../services/pet.service';
 
 @Component({
@@ -28,7 +29,7 @@ export class PetListPage implements OnInit {
 
     getAllPets() {
       //Get saved list of students
-      this.apiService.getList().subscribe(response => {
+      this.apiService.getList().pipe(timeout(300000)).subscribe(response => {
         console.log(response);
         this.petsData = response;
       })

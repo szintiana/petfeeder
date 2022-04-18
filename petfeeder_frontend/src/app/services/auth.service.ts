@@ -22,10 +22,11 @@ export class AuthService {
       tap(token => {
         Storage.set({
           key: "token",
-          value: token.toString()
+          value: JSON.parse(JSON.stringify(token, null, 5)).token
       })
         .then(
-          () => {
+          async () => {
+            console.log((await Storage.get({key: "token"})).value);
             console.log('token stored');
           },
           error => console.error('Error storing item', error)
@@ -51,7 +52,7 @@ export class AuthService {
   //fix this as well please
   // fixed??
   logout() {
-    return this.http.post(this.env.LOGOUT + "/" + this.token["token_type"]+" "+this.token["access_token"], null)
+    return this.http.post(this.env.LOGOUT + "/" + this.token, null)
     .pipe(
       tap(data => {
         Storage.remove({key: "token"});
@@ -65,9 +66,11 @@ export class AuthService {
   // needs to be fixed
   // I think it is fixed??
   user() {
-    return this.http.get<User>(this.env.GET_USER_BY_TOKEN + "/" + this.token["token_type"]+" "+this.token["access_token"])
+    return this.http.get<User>(this.env.GET_USER_BY_TOKEN + "/" + this.token)
     .pipe(
       tap(user => {
+        console.log("auth.service.ts getting user with token");
+        console.log(this.token);
         return user;
       })
     )
@@ -76,7 +79,9 @@ export class AuthService {
   getToken() {
     return Storage.get({key: "token"}).then(
       data => {
-        this.token = JSON.parse(data.value);
+        this.token = data.value;
+        console.log("we are getting this token while authentication: ");
+        console.log(this.token);
         if(this.token != null) {
           this.isLoggedIn = true;
         } else {
