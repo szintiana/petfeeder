@@ -26,6 +26,7 @@ public class UserDTO {
                 .lastName(lastName)
                 .username(username)
                 .email(email)
+                .token(token)
                 //.pets(pets.stream().map(PetDTO::toDAO).collect(Collectors.toList()))
                 .build();
     }

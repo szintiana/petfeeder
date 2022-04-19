@@ -44,6 +44,7 @@ public class UserDAO {
                 .lastName(lastName)
                 .email(email)
                 .username(username)
+                .token(token)
                 //.pets(pets.stream().map(PetDAO::toDTO).collect(Collectors.toList()))
                 .build();
     }
