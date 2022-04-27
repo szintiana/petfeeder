@@ -2,18 +2,14 @@ package com.backend.petfeeder.Service;
 
 import com.backend.petfeeder.DAO.PetDAO;
 import com.backend.petfeeder.DAO.UserDAO;
+import com.backend.petfeeder.DTO.PetDTO;
 import com.backend.petfeeder.DTO.UserDTO;
 import com.backend.petfeeder.Repository.PetRepository;
 import com.backend.petfeeder.Repository.UserRepository;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -66,7 +62,6 @@ public class UserService {
             updatedUser.setPassword(userDAO.getPassword());
             updatedUser.setId(userDAO.getId());
             updatedUser.setPets(userDAO.getPets());
-            updatedUser.setToken(userDTO.getToken());
             return userRepository.save(updatedUser).toDTO();
         } else {
             return null;
@@ -88,16 +83,6 @@ public class UserService {
         return null;
     }
 
-    public UserDTO logout(String token) {
-       UserDAO userDAO = userRepository.findByTokenEquals(token);
-       if (userDAO != null) {
-           userDAO.setToken(null);
-           userRepository.save(userDAO);
-           return userDAO.toDTO();
-       }
-       return null;
-    }
-
     public UserDTO removePetFromUser(String email, String petName) {
         UserDAO userDAO = userRepository.findByEmailEquals(email);
         if (userDAO != null) {
@@ -116,38 +101,16 @@ public class UserService {
         return null;
     }
 
-    public UserDTO findByToken(String token) {
-        UserDAO userDAO = userRepository.findByTokenEquals(token);
-        if (userDAO != null) {
-            return userDAO.toDTO();
-        } else {
-            return null;
+    public List<PetDTO> getPetsFromUser(String username) {
+        UserDAO userDAO = userRepository.findByUsernameEquals(username);
+        if (userDAO != null && !userDAO.getPets().isEmpty()) {
+            return userDAO.getPets().stream().map(PetDAO::toDTO).collect(Collectors.toList());
         }
+        return null;
     }
 
     public void deleteUser(UserDTO userDTO) {
         UserDAO userDAO = userRepository.findByEmailEquals(userDTO.getEmail());
         userRepository.delete(userDAO);
-    }
-
-    public String getJWTToken(String username) {
-        String secretKey = "mySecretKey";
-        List<GrantedAuthority> grantedAuthorities = AuthorityUtils
-                .commaSeparatedStringToAuthorityList("ROLE_USER");
-
-        String token = Jwts
-                .builder()
-                .setId("softtekJWT")
-                .setSubject(username)
-                .claim("authorities",
-                        grantedAuthorities.stream()
-                                .map(GrantedAuthority::getAuthority)
-                                .collect(Collectors.toList()))
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 600000))
-                .signWith(SignatureAlgorithm.HS512,
-                        secretKey.getBytes()).compact();
-
-        return "Bearer " + token;
     }
 }

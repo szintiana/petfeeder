@@ -31,9 +31,9 @@ public class PetService {
         return petDAOAdded.toDTO();
     }
 
+    // not working properly!!!
     public PetDTO updatePet(PetDTO petDTO, String username) {
-        List<PetDAO> petDAOList = petRepository.findByNameEqualsAndBreedEqualsAndBirthDateEquals(petDTO.getName(),
-                petDTO.getBreed(), petDTO.getBirthDate());
+        List<PetDAO> petDAOList = petRepository.findByName(petDTO.getName());
         for (PetDAO petDAO : petDAOList) {
             List<UserDAO> userDAOList = petDAO.getOwners();
             for (UserDAO userDAO : userDAOList) {
@@ -42,9 +42,7 @@ public class PetService {
                     petDAOUpdated.setId(petDAO.getId());
                     petDAOUpdated.setOwners(petDAO.getOwners());
                     petDAOUpdated = petRepository.save(petDAOUpdated);
-                    if (petDAOUpdated != null) {
-                        return petDAOUpdated.toDTO();
-                    }
+                    return petDAOUpdated.toDTO();
                 }
             }
         }

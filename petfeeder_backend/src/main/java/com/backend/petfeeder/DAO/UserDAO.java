@@ -35,8 +35,6 @@ public class UserDAO {
             inverseJoinColumns = @JoinColumn(name = "pet_id", referencedColumnName = "id"))
     @JsonIgnoreProperties("owners")
     private List<PetDAO> pets;
-    @Column
-    private String token;
 
     public UserDTO toDTO() {
         return UserDTO.builder()
@@ -44,7 +42,6 @@ public class UserDAO {
                 .lastName(lastName)
                 .email(email)
                 .username(username)
-                .token(token)
                 //.pets(pets.stream().map(PetDAO::toDTO).collect(Collectors.toList()))
                 .build();
     }

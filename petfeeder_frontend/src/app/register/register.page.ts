@@ -12,47 +12,18 @@ import { AlertService } from 'src/app/services/alert.service';
 })
 export class RegisterPage implements OnInit {
 
-  constructor(private modalController: ModalController,
-    private authService: AuthService,
-    private navCtrl: NavController,
-    private alertService: AlertService
-  ) { }
-  ngOnInit() {
-  }
-  // Dismiss Register Modal
-  dismissRegister() {
-    this.modalController.dismiss();
-  }
-  // On Login button tap, dismiss Register modal and open login Modal
-  async loginModal() {
-    this.dismissRegister();
-    const loginModal = await this.modalController.create({
-      component: LoginPage,
-    });
-    return await loginModal.present();
-  }
-  register(form: NgForm) {
-    this.authService.register(form.value.fName, form.value.lName, form.value.username, form.value.email, form.value.password).subscribe(
-      data => {
-        this.authService.login(form.value.email, form.value.password).subscribe(
-          data => {
-          },
-          error => {
-            console.log(error);
-          },
-          () => {
-            this.dismissRegister();
-            this.navCtrl.navigateRoot('/dashboard');
-          }
-        );
-        this.alertService.presentToast(data['message']);
-      },
-      error => {
-        console.log(error);
-      },
-      () => {
-        
-      }
-    );
+  name: string = "";
+  email: string = "";
+  password: string = "";
+  confirm_password: string = "";  //make confirm password confirm password
+
+  constructor() { }
+
+  ngOnInit() { }
+
+  onSubmit() {
+     alert(
+      this.name + ', ' + this.email + ', ' + this.password + ', ' + this.confirm_password //call on the proper service and reroute
+     )
   }
 }

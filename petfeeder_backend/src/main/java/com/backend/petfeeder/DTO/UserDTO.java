@@ -18,7 +18,6 @@ public class UserDTO {
     private String email;
     private String username;
     private List<PetDTO> pets;
-    private String token;
 
     public UserDAO toDAO() {
         return UserDAO.builder()
@@ -26,7 +25,6 @@ public class UserDTO {
                 .lastName(lastName)
                 .username(username)
                 .email(email)
-                .token(token)
                 //.pets(pets.stream().map(PetDTO::toDAO).collect(Collectors.toList()))
                 .build();
     }
