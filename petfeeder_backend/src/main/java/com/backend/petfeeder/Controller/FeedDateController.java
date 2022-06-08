@@ -29,11 +29,22 @@ public class FeedDateController {
     @Lazy
     FeedDateService feedDateService;
 
-    @PostMapping("addFeedDate/{email}/{petName}/{date}")
-    public ResponseEntity<FeedDateDTO> addFeedDate(@PathVariable("email") String email,
+    @GetMapping("getFeedDates/{username}")
+    public ResponseEntity<List<FeedDateDTO>> getFeedDateByUser(@PathVariable("username") String username) {
+        List<FeedDateDTO> feedDateDTOList= feedDateService.getFeedDateByUser(username);
+        if (feedDateDTOList != null) {
+            feedDateDTOList.forEach(System.out::println);
+            return new ResponseEntity<>(feedDateDTOList, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(null, HttpStatus.I_AM_A_TEAPOT);
+        }
+    }
+
+    @PostMapping("addFeedDate/{username}/{petName}/{date}")
+    public ResponseEntity<FeedDateDTO> addFeedDate(@PathVariable("username") String username,
                                                    @PathVariable("petName") String petName,
                                                    @PathVariable("date") String date) {
-        FeedDateDTO addedElement = feedDateService.addFeedDate(email, petName, date);
+        FeedDateDTO addedElement = feedDateService.addFeedDate(username, petName, date);
         if (addedElement != null) {
             return new ResponseEntity<>(addedElement, HttpStatus.CREATED);
         } else {

@@ -1,0 +1,7 @@
+{
+  "name": "live-streaming-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

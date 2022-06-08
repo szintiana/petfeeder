@@ -24,7 +24,7 @@ valid_path = 'images/valid'
 train_batches = ImageDataGenerator(preprocessing_function=tf.keras.applications.vgg16.preprocess_input) \
                 .flow_from_directory(directory=train_path, target_size=(224,224), classes=['cat','dog','wild'], batch_size=10)
 valid_batches = ImageDataGenerator(preprocessing_function=tf.keras.applications.vgg16.preprocess_input) \
-                .flow_from_directory(directory=valid_path, target_size=(224,224), classes=c['at','dog','wild'], batch_size=10)
+                .flow_from_directory(directory=valid_path, target_size=(224,224), classes=['at','dog','wild'], batch_size=10)
 
 imgs, labels = next(train_batches)
 

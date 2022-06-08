@@ -23,14 +23,22 @@ public class FeedDateService {
     @Lazy
     UserRepository userRepository;
 
-    public FeedDateDTO addFeedDate(String email, String petName, String date) {
-        UserDAO userDAO = userRepository.findByEmailEquals(email);
+    public List<FeedDateDTO> getFeedDateByUser(String username) {
+        List<FeedDateDAO> feedDates = feedDateRepository.findByUserDAO_Username(username);
+        if (feedDates != null) {
+            return feedDates.stream().map(FeedDateDAO::toDTO).collect(Collectors.toList());
+        }
+        return null;
+    }
+
+    public FeedDateDTO addFeedDate(String username, String petName, String date) {
+        UserDAO userDAO = userRepository.findByUsernameEquals(username);
         for (PetDAO petDAO : userDAO.getPets()) {
             if (petDAO.getName().equals(petName)) {
                 FeedDateDAO feedDateDAO = new FeedDateDAO();
                 feedDateDAO.setPetDAO(petDAO);
                 feedDateDAO.setUserDAO(userDAO);
-                feedDateDAO.setDate(LocalDateTime.parse(date));
+                feedDateDAO.setDate(LocalDateTime.parse(date.substring(0, date.length() - 6)));
                 return feedDateRepository.save(feedDateDAO).toDTO();
             }
         }
